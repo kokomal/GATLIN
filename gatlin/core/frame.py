@@ -1,9 +1,10 @@
 # coding=utf-8
-from gatlin.preps import geo,consts, params
-
-import gatlin.infra.security as security
 import json
+
 import gatlin.Gatlin as Gatlin
+import gatlin.infra.security as security
+from gatlin.preps import geo, consts, params
+
 
 # 用户登录
 def packLoginParam(paramIn):
@@ -11,9 +12,9 @@ def packLoginParam(paramIn):
     paramOut["method"] = consts.LOGIN
     biz = {}
     biz['loginType'] = "ORIGIN"
-    biz['mobileNo'] = paramIn['mobileNo']   # 手机号
+    biz['mobileNo'] = paramIn['mobileNo']  # 手机号
     pwd = paramIn['password']
-    biz['password'] = str(security.encrypt(bytes(pwd, encoding ="utf8")), 'utf-8')
+    biz['password'] = str(security.encrypt(bytes(pwd, encoding="utf8")), 'utf-8')
     biz['geoInfo'] = str(geo.packGeo())  # 地理geo必传，否则会落库报latitude非空键异常
     paramOut["bizContent"] = str(biz)  # 业务数据
     return paramOut
@@ -26,7 +27,7 @@ def packRegisterParam(paramIn):
     biz = {}
     biz['mobileNo'] = paramIn['mobileNo']  # 手机号
     pwd = paramIn['password']
-    biz['password'] = str(security.encrypt(bytes(pwd, encoding ="utf8")), 'utf-8')
+    biz['password'] = str(security.encrypt(bytes(pwd, encoding="utf8")), 'utf-8')
     biz['geoInfo'] = str(geo.packGeo())  # 地理geo必传，否则会落库报latitude非空键异常
     paramOut["bizContent"] = str(biz)  # 业务数据
     return paramOut
@@ -70,7 +71,7 @@ class MainFrame:
             getattr(self, orderMethod)()
             Gatlin.printReturn(json.loads(self.ret))
         print("---MANDATORY ENDS---")
-        
+
     # 给定初始值，环环相扣
     def stickyWalk(self):
         print("---HERE WE GO!---")
@@ -104,27 +105,26 @@ class LoginTester(MainFrame):
         self.context['token'] = token  # token放入上下文
         self.context['userNo'] = userNo  # userNo放入上下文
         self.curMethod = "biz1"
-    
+
     def biz1(self):
         print("BIZ1!!")
         self.nextMethod = "biz2"
-        
+
     def biz2(self):
         print("BIZ2!!")
         self.nextMethod = "biz3"
-        
+
     def biz3(self):
         print("BIZ3!!")
         self.nextMethod = None
-        
+
     def refundRecordQuery(self):
         refundPrepare = packRefundRecordQueryParam(self.paramIn)
         urlStr = consts.getEnviron(self.ENV) + consts.REFUND_RECORD_QUERY
         self.ret = Gatlin.myJsonPost(urlStr, refundPrepare).text
 
 
-
-# 从用户注册开始的一系列动作        
+# 从用户注册开始的一系列动作
 class RegisterTester(MainFrame):
 
     def myInit(self):
@@ -144,20 +144,20 @@ class RegisterTester(MainFrame):
         self.context['token'] = token  # token放入上下文
         self.context['userNo'] = userNo  # userNo放入上下文
         self.curMethod = "biz4"
-    
+
     def biz4(self):
         print("BIZ4!!")
         self.nextMethod = "biz5"
-        
+
     def biz5(self):
         print("BIZ5!!")
         self.nextMethod = "biz6"
-        
+
     def biz6(self):
         print("BIZ6!!")
         self.nextMethod = None
 
-       
+
 if __name__ == '__main__':
     paramIn = {}  # 入参包括环境、手机号和密码等账户信息
     paramIn['env'] = 'PH_DEV'
@@ -167,11 +167,11 @@ if __name__ == '__main__':
     paramIn['contractNo'] = '6851471332867129344'
     paramIn['custNo'] = 'CT6851459341117042688'
     paramIn['loanNo'] = '6857427969591234560'
-    
+
     logi = LoginTester("myInit", paramIn)  # 给定一个初始方法，一路走下去
-#     logi.stickyWalk()
+    #     logi.stickyWalk()
     logi.mandatoryWalk(["refundRecordQuery"])  # 强制指定顺序走下去,无视nextMethod
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 #     print('-' * 80)
 #     paramIn = {}  # 入参包括环境、手机号和密码等账户信息
 #     paramIn['environ'] = 'DEV'

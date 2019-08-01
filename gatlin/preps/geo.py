@@ -28,5 +28,6 @@ def packGeo():
     geog["longitude"] = 112.62549304026481
     return geog
 
+
 if __name__ == '__main__':
     print(packGeo())

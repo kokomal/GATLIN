@@ -18,6 +18,10 @@ class AbstractNodeParser(metaclass=ABCMeta):
     def prepare(self):
         pass
 
+    @abstractmethod
+    def fetch_resp(self):
+        pass
+
     # 具体DB的校验
     # 注意json的sql里面，where语句要加单引号
     def verify_db(self):

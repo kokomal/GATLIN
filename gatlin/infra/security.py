@@ -1,13 +1,9 @@
-from Crypto.PublicKey import RSA
 import base64
-import os
 
 from Crypto.Cipher import PKCS1_v1_5
 from Crypto.PublicKey import RSA
 
-from gatlin.preps import consts
 import gatlin.config.configLocation as loc
-
 
 PRIVATE_KEY = 0
 PUBLIC_KEY = 0
