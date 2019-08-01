@@ -101,7 +101,6 @@ def convertToCommaSplitted(entities):
 
 # 单行数据是否有KV对
 def whetherContainsKV(mp, key, val):
-    print("CHECKING...", mp, key, val)
     return key in mp and (mp[key] == val)
 
 

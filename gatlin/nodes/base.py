@@ -21,7 +21,7 @@ class AbstractNodeParser(metaclass=ABCMeta):
     # 具体DB的校验
     # 注意json的sql里面，where语句要加单引号
     def verify_db(self):
-        print("#" * 18, "ENTER DB CHECK!", "#" * 18)
+        print(">" * 18, "ENTER DB CHECK!", "<" * 18)
         ENV = self.context['environ']['env']
         orm = ORM(ENV)
         dbQueries = self.context['environ']['dbQueries']
@@ -33,9 +33,12 @@ class AbstractNodeParser(metaclass=ABCMeta):
             injectedDbCriterion = injectMap(dbCriterion, self.context['session'])
             res = orm.assertOneRow(injectedDbQuery, injectedDbCriterion)
             if not res:
-                self.context['misc']['reason'] = 'DB Check Failed, query=%s, criterion=%s' % (
+                self.context['misc']['reason'] = 'DB Check Failed'
+                info = 'query=%s, criterion=%s' % (
                     str(injectedDbQuery), str(injectedDbCriterion))
-        print("#" * 18, "PASS DB CHECK!", "#" * 18)
+                print('FAILED, info is %s' % info)
+                return False
+        print(">" * 18, "PASS DB CHECK!", "<" * 18)
         return True
 
     # 具体Response结果的解析

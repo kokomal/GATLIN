@@ -33,7 +33,7 @@
       "dbCriteria": [
         {
           "mobile_no": "{$mobileNo$}",
-          "user_state": "2"
+          "user_state": "1"
         }
       ]
     }
