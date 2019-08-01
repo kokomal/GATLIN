@@ -11,7 +11,7 @@ class UtilTest(unittest.TestCase):
         print('***AFTER ONE TEST***')
 
     def setUp(self):
-        # 每个测试用例执行之前做操作
+        # 每个测试用例执行之前做操作wqd
         print('***BEFORE ONE TEST***')
 
     @classmethod
