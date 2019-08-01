@@ -1,0 +1,41 @@
+{
+  "case": "loginFlow",
+  "environ": {
+    "env": "PH_DEV",
+    "batchMode": "OFF"
+  },
+  "initParam": {
+    "mobileNo": "+6308132000013",
+    "password": "123456",
+    "hostApp": "PHLLOAN",
+    "channelSource": "PHL_000"
+  },
+  "nodes": [
+    {
+      "nodeName": "login",
+      "shouldVerify": "Y",
+      "verifyWay": "resp&db",
+      "expectedRespKeys": [
+        "flag",
+        "data>userNo"
+      ],
+      "expectedRespVals": [
+        "S",
+        "{$userNo$}"
+      ],
+      "dbQueries": [
+        {
+          "dbName": "cis",
+          "tableName": "u_user",
+          "where": "mobile_no = '{$mobileNo$}'"
+        }
+      ],
+      "dbCriteria": [
+        {
+          "mobile_no": "{$mobileNo$}",
+          "user_state": "2"
+        }
+      ]
+    }
+  ]
+}

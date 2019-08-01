@@ -1,0 +1,36 @@
+{
+  "case": "applyFlow",
+  "session": {
+    "env": "PH_DEV",
+    "batchMode": "ON",
+    "mobileNo": "+6308132000201,+6308132000202",
+    "password": "123456"
+  },
+  "nodes": [
+    {
+      "nodeName": "register",
+      "shouldVerify": "Y",
+      "verifyWay": "db",
+      "dbQueryCondition": {
+        "dbName": "cis",
+        "tableName": "u_user",
+        "where": "mobile_no = {$mobile$}"
+      },
+      "dbCriteria": {
+        "mobile_no": "{$mobile$}",
+        "user_state": "1"
+      }
+    },
+    {
+      "nodeName": "query",
+      "shouldVerify": "Y",
+      "verifyWay": "resp",
+      "respKeys": [
+        "code"
+      ],
+      "respVals": [
+        "success"
+      ]
+    }
+  ]
+}
