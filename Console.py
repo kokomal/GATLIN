@@ -1,15 +1,16 @@
 # coding = utf-8
 import json
+import os
 
 import gatlin.core.flowParser as fl
 
 
 # 开火
 def fire():
-    flowsConfig = fl.launch_flows_config('input/flows.json')
+    flowsConfig = fl.launch_flows_config(os.path.dirname(os.path.abspath(__file__)) + '/gatlin/input/flows.json')
     seqs = flowsConfig['flows']
     for seq in seqs:
-        flowJsonFile = 'input/flows/' + seq + '.json'
+        flowJsonFile = os.path.dirname(os.path.abspath(__file__)) + '/gatlin/input/flows/' + seq + '.json'
         with open(flowJsonFile) as fjf:
             flow = json.loads(fjf.read())
             fl.parse_one_flow(flow)
