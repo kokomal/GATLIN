@@ -15,6 +15,10 @@
       "nodeName": "login",
       "shouldVerify": "Y",
       "verifyWay": "resp&db",
+      "expectedRespMap": {
+        "flag": "S",
+        "data>userNo": "{$userNo$}"
+      },
       "expectedRespKeys": [
         "flag",
         "data>userNo"
@@ -36,6 +40,21 @@
           "user_state": "1"
         }
       ]
+    },
+    {
+      "nodeName": "demo1",
+      "shouldVerify": "N",
+      "mock": true
+    },
+    {
+      "nodeName": "demo3",
+      "shouldVerify": "N",
+      "mock": true
+    },
+    {
+      "nodeName": "demo2",
+      "shouldVerify": "N",
+      "mock": true
     }
   ]
 }

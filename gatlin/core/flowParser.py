@@ -3,6 +3,7 @@ import copy
 import json
 
 import gatlin.infra.commonUtils as util
+import gatlin.infra.print as pt
 import gatlin.nodes.parserSelector as ps
 
 
@@ -16,10 +17,10 @@ def launch_flows_config(location):
 
 def parse_one_flow(input_flow_map):
     caseName = input_flow_map['case']
-    print('*' * 40, 'PARSING %s' % caseName, 'BEGIN', '*' * 40)
+    pt.print_green('*' * 40 + ('PARSING %s' % caseName) + ' BEGIN' + '*' * 40)
     context = {}
-    context['environ'] = copy.deepcopy(input_flow_map['environ'])
-    context['initParam'] = input_flow_map['initParam']
+    context['environ'] = copy.deepcopy(input_flow_map['environ'])  # environ抽到全局main-flow
+    context['initParam'] = input_flow_map['initParam']  # initParam抽到全局main-flow
     context['request'] = {}
     context['response'] = {}
     context['session'] = {}
@@ -32,9 +33,10 @@ def parse_one_flow(input_flow_map):
         if not nodeParser.can_proceed():
             print("DUE TO [==%s==] THE FLOW HAS TO STOP." % context['misc']['reason'])
             print('#' * 30, "NODE %s CANNOT PROCEED" % node['nodeName'], '#' * 30)
+            pt.print_red('*' * 40 + ('PARSING %s' % caseName) + ' ABORTED' + '*' * 40)
             break
         context['environ'] = copy.deepcopy(input_flow_map['environ'])  # 每次清洗environ防止前后的污染，而session由node来管理
-    print('*' * 40, 'PARSING %s' % caseName, 'ENDED', '*' * 40)
+    pt.print_green('*' * 40 + ('PARSING %s' % caseName) + ' ENDED' + '*' * 40)
 
 
 if __name__ == '__main__':

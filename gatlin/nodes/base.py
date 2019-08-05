@@ -69,8 +69,8 @@ class AbstractNodeParser(metaclass=ABCMeta):
         self.call_out()
         self.fetch_resp()
         should_verify = self.context['environ']['shouldVerify']  # 是否校验
-        verify_way = self.context['environ']['verifyWay']  # 校验方式
         if "Y" == should_verify:
+            verify_way = self.context['environ']['verifyWay']  # 校验方式
             print("NODE [%s] SHOULD-VERIFY AND VERIFY-WAY IS [%s]" % (self.context['environ']['nodeName'], verify_way))
             db_check_result = True
             resp_check_result = True
@@ -94,6 +94,9 @@ class AbstractNodeParser(metaclass=ABCMeta):
 
     # 外调发起post请求
     def call_out(self):
+        GLOBAL_ENV = self.context['environ']
+        if "mock" in GLOBAL_ENV and GLOBAL_ENV["mock"]:  # mock开关打开
+            return
         ENV = self.context['environ']['env']
         METHOD = self.context['environ']['nodeName']
         urlStr = consts.getEnviron(ENV) + consts.getMethod(METHOD)

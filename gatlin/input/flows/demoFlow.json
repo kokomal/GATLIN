@@ -1,0 +1,30 @@
+{
+  "case": "demoFlow",
+  "environ": {
+    "env": "PH_DEV",
+    "batchMode": "OFF"
+  },
+  "initParam": {
+    "mobileNo": "+6308132000013",
+    "password": "123456",
+    "hostApp": "PHLLOAN",
+    "channelSource": "PHL_000"
+  },
+  "nodes": [
+    {
+      "nodeName": "demo1",
+      "shouldVerify": "N",
+      "mock": true
+    },
+    {
+      "nodeName": "demo2",
+      "shouldVerify": "N",
+      "mock": true
+    },
+    {
+      "nodeName": "demo3",
+      "shouldVerify": "N",
+      "mock": true
+    }
+  ]
+}
