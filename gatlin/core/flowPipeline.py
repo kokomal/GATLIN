@@ -15,17 +15,15 @@ def launch_flows_config(location):
     return flowsConfig
 
 
-def parse_one_flow(input_flow_map):
-    caseName = input_flow_map['case']
-    pt.print_green('*' * 40 + ('PARSING %s' % caseName) + ' BEGIN' + '*' * 40)
+def parse_one_flowX(flow_name, nodes, environ, init_param):
+    pt.print_green('*' * 40 + ('PARSING %s' % flow_name) + ' BEGIN' + '*' * 40)
     context = {}
-    context['environ'] = copy.deepcopy(input_flow_map['environ'])  # environ抽到全局main-flow
-    context['initParam'] = input_flow_map['initParam']  # initParam抽到全局main-flow
+    context['environ'] = copy.deepcopy(environ)  # environ抽到全局main-flow
+    context['initParam'] = init_param  # initParam抽到全局main-flow
     context['request'] = {}
     context['response'] = {}
     context['session'] = {}
     context['misc'] = {'canProceed': True}
-    nodes = input_flow_map['nodes']
     for node in nodes:
         util.inject_all(context['environ'], node)
         nodeParser = ps.fetch_parser(node['nodeName'])(context)
@@ -33,10 +31,10 @@ def parse_one_flow(input_flow_map):
         if not nodeParser.can_proceed():
             print("DUE TO [==%s==] THE FLOW HAS TO STOP." % context['misc']['reason'])
             print('#' * 30, "NODE %s CANNOT PROCEED" % node['nodeName'], '#' * 30)
-            pt.print_red('*' * 40 + ('PARSING %s' % caseName) + ' ABORTED' + '*' * 40)
+            pt.print_red('*' * 40 + ('PARSING %s' % flow_name) + ' ABORTED' + '*' * 40)
             break
-        context['environ'] = copy.deepcopy(input_flow_map['environ'])  # 每次清洗environ防止前后的污染，而session由node来管理
-    pt.print_green('*' * 40 + ('PARSING %s' % caseName) + ' ENDED' + '*' * 40)
+        context['environ'] = copy.deepcopy(environ)  # 每次清洗environ防止前后的污染，而session由node来管理
+    pt.print_green('*' * 40 + ('PARSING %s' % flow_name) + ' ENDED' + '*' * 40)
 
 
 if __name__ == '__main__':

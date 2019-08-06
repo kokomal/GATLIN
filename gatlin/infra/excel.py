@@ -5,10 +5,8 @@ import json
 from openpyxl import load_workbook
 
 
-# 注意如果原文件有一些图片或者图标，则保存的时候可能会导致图片丢失
-
 # 读取某一个region，从此之下读取两列拼装成map
-def read_selected_rows(fn, sheet_name, region_name):
+def read_region_below_map(fn, sheet_name, region_name):
     mp = {}
     wb = load_workbook(fn)
     ws = wb[sheet_name]
@@ -53,3 +51,19 @@ def find_row_region(fn, sheet_name, keyword, start_region_name):
     row_num = find_row_num(fn, sheet_name, keyword, start_region_name)
     nm = ws.cell(row_num, ws[start_region_name].column)
     return nm.coordinate
+
+
+def find_row_and_pack_map(fn, sheet_name, keyword, start_region_name):
+    mp = {}
+    ws = load_workbook(fn)[sheet_name]
+    row_num = find_row_num(fn, sheet_name, keyword, start_region_name)
+    nm = ws.cell(row_num, ws[start_region_name].column)
+    region = ws[nm.coordinate]
+    next_row = region.row + 1
+    column = region.column
+    while 1:
+        if ws.cell(next_row, column).value is None:
+            break
+        mp[ws.cell(next_row, column).value] = ws.cell(next_row, column + 1).value
+        next_row = next_row + 1
+    return mp

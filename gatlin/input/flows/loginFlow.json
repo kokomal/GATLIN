@@ -1,11 +1,11 @@
 {
   "case": "loginFlow",
   "environ": {
-    "env": "PH_DEV",
+    "env": "PH_SIT",
     "batchMode": "OFF"
   },
   "initParam": {
-    "mobileNo": "+6308132000013",
+    "mobileNo": "+6308130223712",
     "password": "123456",
     "hostApp": "PHLLOAN",
     "channelSource": "PHL_000"

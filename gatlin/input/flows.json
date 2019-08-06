@@ -1,5 +1,6 @@
 {
   "flows": [
-    "loginFlow","demoFlow"
+    "loginFlow",
+    "demoFlow"
   ]
 }
