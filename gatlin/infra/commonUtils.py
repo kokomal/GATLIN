@@ -3,6 +3,11 @@ def inject_all(target, src):
     for (k, v) in src.items():
         target[k] = v
 
+def inject_all_soft(target, src):
+    for (k, v) in src.items():
+        if v is None or v == "":
+            continue
+        target[k] = v
 
 def findCascadedMap(complex_key, target_map):
     if ">" not in complex_key:

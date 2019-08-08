@@ -12,23 +12,22 @@ from gatlin.preps import params
 # context包括6个成员:
 # request和response代表每次的请求和返回，与请求密切相关，会随着工作流进行而变化
 # environ代表环境变量，即在哪个环境下，flow的工作模式等
-# initParam代表初始化参数，也可以认为是初始的入口参数
 # session代表全局共享的业务上下文，会随着工作流进行而变化
 # misc代表引擎的运行状态信息上下文，理论上不应该影响APP业务，只负责记录引擎运行信息
 class LoginNodeParser(AbstractNodeParser):
     def prepare(self):
-        reqParam = params.genericPackParam()
-        util.inject_all(reqParam, self.context['initParam'])  # 取初始化参数
+        public_req_param = params.genericPackParam()
+        util.inject_all_soft(public_req_param, self.context['session'])  # 取初始化参数
         ENV = self.context['environ']['env']
         sec.init(ENV)  # 初始化加密的公私钥
-        self.pack_method(reqParam)
+        self.pack_method(public_req_param)
         biz = {}
         biz['loginType'] = "ORIGIN"
-        biz['mobileNo'] = reqParam['mobileNo']  # 手机号
-        biz['password'] = str(sec.encrypt(bytes(reqParam['password'], encoding='utf8')), 'utf-8')
+        biz['mobileNo'] = self.context['environ']['mobileNo']  # 手机号和password放到了environ里面
+        biz['password'] = str(sec.encrypt(bytes(self.context['environ']['password'], encoding='utf8')), 'utf-8')
         biz['geoInfo'] = str(geo.packGeo())  # 地理geo必传，否则会落库报latitude非空键异常
-        reqParam["bizContent"] = str(biz)  # 业务数据
-        self.context['request'] = reqParam  # 归根到底目的是为了拼装request参数
+        public_req_param["bizContent"] = str(biz)  # 业务数据
+        self.context['request'] = public_req_param  # 归根到底目的是为了拼装request参数
 
     # 重点在此处理session
     def fetch_resp(self):

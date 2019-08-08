@@ -2,6 +2,7 @@
 import ctypes
 import sys
 
+# 仅仅用于Windows环境下CMD的字体颜色，其他操作系统或console不支持
 STD_INPUT_HANDLE = -10
 STD_OUTPUT_HANDLE = -11
 STD_ERROR_HANDLE = -12

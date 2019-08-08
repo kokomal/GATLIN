@@ -11,15 +11,10 @@ TH_UAT_ENVIRON = 'https://lps-web.th-uat.hidataverse.com/' + API
 PH_SIT_ENVIRON = 'https://lps-web.ph-sit.hidataverse.com/' + API
 
 environs = {'PH_DEV': PH_DEV_ENVIRON, 'TH_UAT': TH_UAT_ENVIRON, 'PH_SIT': PH_SIT_ENVIRON}
-configDirs = {'PH_DEV': 'PH_DEV', 'TH_UAT': 'TH_UAT', 'PH_SIT': 'PH_SIT'}
 
 
 def getEnviron(env):
     return environs[env]
-
-
-def getConfigDir(env):
-    return configDirs[env]
 
 
 def getMethod(env):
@@ -49,4 +44,4 @@ REFUND_RECORD_QUERY = "qihoo.sdk.appl.refund.record.query"
 # 查询补件信息
 SUPPLEMENT_LIST_QUERY = "qihoo.sdk.appl.supplementlist.query"
 
-methodMap = {'login': LOGIN, 'register': REGISTER}
+methodMap = {'login': LOGIN, 'register': REGISTER, "summaryQuery": APPL_SUMMARY_QUERY}

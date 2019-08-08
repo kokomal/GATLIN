@@ -22,8 +22,7 @@ from gatlin.preps import consts
 class ORM:
     def __init__(self, env):
         self.ENV = env
-        DIR = consts.getConfigDir(env)
-        dbJsonFile = configLocation.get_location() + "/" + DIR + "/" + "dbconfig.json"
+        dbJsonFile = configLocation.get_location() + "/" + env + "/" + "dbconfig.json"
         with open(dbJsonFile) as f:
             rawJson = f.read()
             self.config = json.loads(rawJson)

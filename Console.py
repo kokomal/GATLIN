@@ -13,7 +13,7 @@ def preload():
     fn = os.path.dirname(os.path.abspath(__file__)) + '/command.xlsm'
     wb = load_workbook(fn)
     for ws in wb.worksheets:
-        if not ws.title == 'main-flow':
+        if ws.title not in ('main-flow', 'demo'):
             cache_nodes[ws.title] = ex.read_sheet_and_get_json(fn, ws.title, "B3")
 
 

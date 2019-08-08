@@ -99,8 +99,8 @@ class AbstractNodeParser(metaclass=ABCMeta):
             return
         ENV = self.context['environ']['env']
         METHOD = self.context['environ']['nodeName']
-        urlStr = consts.getEnviron(ENV) + consts.getMethod(METHOD)
-        res = Gatlin.myJsonPost(urlStr, self.context['request'])
+        url_str = consts.getEnviron(ENV) + consts.getMethod(METHOD)
+        res = Gatlin.myJsonPost(url_str, self.context['request'])
         self.context['response'] = json.loads(res.text)
 
     # 能否继续
