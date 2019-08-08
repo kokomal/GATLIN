@@ -5,6 +5,7 @@ from openpyxl import load_workbook
 
 import gatlin.core.flowPipeline as fl
 import gatlin.infra.excel as ex
+import gatlin.infra.print as pt
 
 cache_nodes = {}
 
@@ -34,6 +35,7 @@ def fire_away():
 
 
 if __name__ == '__main__':
+    pt.print_test()
     preload()
     fire_away()
     while 1:

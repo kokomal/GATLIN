@@ -8,7 +8,7 @@ STD_OUTPUT_HANDLE = -11
 STD_ERROR_HANDLE = -12
 
 # 字体颜色定义 text colors
-FOREGROUND_BLUE = 0x09  # blue.
+FOREGROUND_BLUE = 0x03  # blue.
 FOREGROUND_GREEN = 0x0a  # green.
 FOREGROUND_RED = 0x0c  # red.
 FOREGROUND_YELLOW = 0x0e  # yellow.
@@ -28,6 +28,13 @@ def set_cmd_text_color(color, handle=std_out_handle):
 # reset white
 def reset_color():
     set_cmd_text_color(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE)
+
+
+# blue
+def print_blue(mess):
+    set_cmd_text_color(FOREGROUND_BLUE)
+    sys.stdout.write(mess + '\n')
+    reset_color()
 
 
 # green
@@ -56,6 +63,17 @@ def print_yellow_red(mess):
     set_cmd_text_color(BACKGROUND_YELLOW | FOREGROUND_RED)
     sys.stdout.write(mess + '\n')
     reset_color()
+
+
+def print_test():
+    bkps = range(16)
+    fgs = range(16)
+    for bkp in bkps:
+        for fg in fgs:
+            color = bkp * 16 + fg
+            set_cmd_text_color(color)
+            sys.stdout.write("you see, rainbow!\n")
+        reset_color()
 
 
 if __name__ == '__main__':

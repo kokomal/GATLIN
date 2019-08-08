@@ -8,6 +8,7 @@ import gatlin.infra.textParser as tx
 from gatlin import Gatlin
 from gatlin.infra.orm import ORM
 from gatlin.preps import consts
+import gatlin.infra.print as pt
 
 
 class AbstractNodeParser(metaclass=ABCMeta):
@@ -25,7 +26,7 @@ class AbstractNodeParser(metaclass=ABCMeta):
     # 具体DB的校验
     # 注意json的sql里面，where语句要加单引号
     def verify_db(self):
-        print(">" * 18, "ENTER DB CHECK!", "<" * 18)
+        pt.print_blue(">" * 18 + "进入 DB CHECK!" + "<" * 18)
         ENV = self.context['environ']['env']
         orm = ORM(ENV)
         dbQueries = self.context['environ']['dbQueries']
@@ -42,12 +43,12 @@ class AbstractNodeParser(metaclass=ABCMeta):
                     str(injectedDbQuery), str(injectedDbCriterion))
                 print('FAILED, info is %s' % info)
                 return False
-        print(">" * 18, "PASS DB CHECK!", "<" * 18)
+        pt.print_blue(">" * 18 + "完成 DB CHECK!" + "<" * 18)
         return True
 
     # 具体Response结果的解析
     def verify_response(self):
-        print(">" * 18, "ENTER RESPONSE CHECK!", "<" * 18)
+        pt.print_blue(">" * 18 + "进入 RESPONSE CHECK!" + "<" * 18)
         expectedKeys = self.context['environ']['expectedRespKeys']
         if expectedKeys is None:
             return True
@@ -60,7 +61,7 @@ class AbstractNodeParser(metaclass=ABCMeta):
             if "" == valInRealResp or not expectedVal == valInRealResp:
                 self.context['misc']['reason'] = 'No RESP K:%s V:%s Found' % (expectedKey, expectedVal)
                 return False
-        print(">" * 18, "PASS RESPONSE CHECK!", "<" * 18)
+        pt.print_blue(">" * 18 + "完成 RESPONSE CHECK!" + "<" * 18)
         return True
 
     # 核心流程
