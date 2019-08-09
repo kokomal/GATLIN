@@ -72,7 +72,7 @@ def print_test():
         for fg in fgs:
             color = bkp * 16 + fg
             set_cmd_text_color(color)
-            sys.stdout.write("you see, rainbow!\n")
+            sys.stdout.write("==============You see, rainbow!==============\n")
         reset_color()
 
 

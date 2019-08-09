@@ -6,26 +6,32 @@ from openpyxl import load_workbook
 import gatlin.core.flowPipeline as fl
 import gatlin.infra.excel as ex
 import gatlin.infra.print as pt
-
+import gatlin.preps.geo as geo
+import gatlin.preps.device as dv
 cache_nodes = {}
+fn = os.path.dirname(os.path.abspath(__file__)) + '/command.xlsm'
 
 
 def preload():
-    fn = os.path.dirname(os.path.abspath(__file__)) + '/command.xlsm'
     wb = load_workbook(fn)
+    xlsm_wrap = ex.XlsmWrapper(fn)
     for ws in wb.worksheets:
-        if ws.title not in ('main-flow', 'demo'):
+        if ws.title not in ('main-flow', 'example'):
             cache_nodes[ws.title] = ex.read_sheet_and_get_json(fn, ws.title, "B3")
+    return xlsm_wrap
 
 
-def fire_away():
-    fn = os.path.dirname(os.path.abspath(__file__)) + '/command.xlsm'
-    init_param_map = ex.find_row_and_pack_map(fn, 'main-flow', 'initParam', 'A1')
-    environ_map = ex.find_row_and_pack_map(fn, 'main-flow', 'environ', 'A1')
-    running_flows_map = ex.find_row_and_pack_map(fn, 'main-flow', 'runningFlows', 'D1')
+def fire_away(xlsm_wrap):
+    init_param_map = xlsm_wrap.find_row_and_pack_map('main-flow', 'initParam', 'A1')
+    environ_map = xlsm_wrap.find_row_and_pack_map('main-flow', 'environ', 'A1')
+    running_flows_map = xlsm_wrap.find_row_and_pack_map('main-flow', 'runningFlows', 'D1')
+    dev = xlsm_wrap.find_row_and_pack_map('main-flow', 'device', 'L1')
+    geo = xlsm_wrap.find_row_and_pack_map('main-flow', 'geo', 'L1')
+    print('DEV', dev)
+    print('GEO', geo)
     for (flow, status) in running_flows_map.items():
         if status == 'ON':
-            flow_seq_map = ex.find_row_and_pack_map(fn, 'main-flow', flow, 'G1')
+            flow_seq_map = xlsm_wrap.find_row_and_pack_map('main-flow', flow, 'G1')
             node_names = flow_seq_map.values()
             nodes = []
             for node in node_names:
@@ -36,8 +42,8 @@ def fire_away():
 
 if __name__ == '__main__':
     pt.print_test()
-    preload()
-    fire_away()
+    xlsm_wrap = preload()
+    fire_away(xlsm_wrap)
     while 1:
         x = input("Press [q] to Quit. Press Any Other Key To RESTART...")
         if not x == 'q':

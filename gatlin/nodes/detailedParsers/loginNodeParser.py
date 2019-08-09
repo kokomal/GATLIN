@@ -3,6 +3,7 @@
 import gatlin.infra.commonUtils as util
 import gatlin.infra.security as sec
 import gatlin.preps.geo as geo
+import gatlin.preps.device as dv
 from gatlin.nodes.base import AbstractNodeParser
 from gatlin.preps import params
 
@@ -28,6 +29,7 @@ class LoginNodeParser(AbstractNodeParser):
         biz['geoInfo'] = str(geo.packGeo())  # 地理geo必传，否则会落库报latitude非空键异常
         public_req_param["bizContent"] = str(biz)  # 业务数据
         self.context['request'] = public_req_param  # 归根到底目的是为了拼装request参数
+        print("LOGIN PARAM", public_req_param)
 
     # 重点在此处理session
     def fetch_resp(self):

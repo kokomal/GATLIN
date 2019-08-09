@@ -67,3 +67,24 @@ def find_row_and_pack_map(fn, sheet_name, keyword, start_region_name):
         mp[ws.cell(next_row, column).value] = ws.cell(next_row, column + 1).value
         next_row = next_row + 1
     return mp
+
+
+class XlsmWrapper:
+    def __init__(self, fn):
+        self.fn = fn
+        self.wb = load_workbook(fn)
+
+    def find_row_and_pack_map(self, sheet_name, keyword, start_region_name):
+        mp = {}
+        ws = load_workbook(self.fn)[sheet_name]
+        row_num = find_row_num(self.fn, sheet_name, keyword, start_region_name)
+        nm = ws.cell(row_num, ws[start_region_name].column)
+        region = ws[nm.coordinate]
+        next_row = region.row + 1
+        column = region.column
+        while 1:
+            if ws.cell(next_row, column).value is None:
+                break
+            mp[ws.cell(next_row, column).value] = ws.cell(next_row, column + 1).value
+            next_row = next_row + 1
+        return mp
