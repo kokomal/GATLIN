@@ -26,8 +26,19 @@ def read_sheet_and_get_json(fn, sheet_name, region):
     wb.guess_types = True  # 猜测格式类型
     ws = wb[sheet_name]
     region = ws[region]
+    row_idx = region.row
+    col_idx = region.column
     js_str = ""
-    js_str = js_str + region.value.strip()
+    while 1:
+        oneline = ws.cell(row_idx, col_idx).value
+        if oneline is None:
+            break
+        oneline = oneline.replace("_x000D_", "")  # 处理excel的换行CR编码残留，略丑陋
+        # for i in range(len(oneline)):
+        #     print("ascii of " + oneline[i] + " is: " + ascii(ord(oneline[i])))
+        js_str = js_str + oneline.strip()
+        row_idx = row_idx + 1
+    print(js_str)
     return json.loads(js_str)
 
 

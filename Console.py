@@ -6,8 +6,7 @@ from openpyxl import load_workbook
 import gatlin.core.flowPipeline as fl
 import gatlin.infra.excel as ex
 import gatlin.infra.print as pt
-import gatlin.preps.geo as geo
-import gatlin.preps.device as dv
+
 cache_nodes = {}
 fn = os.path.dirname(os.path.abspath(__file__)) + '/command.xlsm'
 
@@ -41,7 +40,7 @@ def fire_away(xlsm_wrap):
 
 
 if __name__ == '__main__':
-    pt.print_test()
+    # pt.print_test()
     xlsm_wrap = preload()
     fire_away(xlsm_wrap)
     while 1:
@@ -51,7 +50,3 @@ if __name__ == '__main__':
             fire_away()
         else:
             break
-    # pt.printGreen('print_green:Gree Color Text')
-    # pt.printRed('print_red:Red Color Text')
-    # pt.printYellow('print_yellow:Yellow Color Text')
-    # pt.printYellowRed('print_yellow:Yellow Red Color Text')
