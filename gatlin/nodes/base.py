@@ -58,7 +58,7 @@ class AbstractNodeParser(metaclass=ABCMeta):
             expectedVal = tx.inject(expectedVals[i], '{$', '$}', self.context['session'])
             valInRealResp = util.findCascadedMap(expectedKey, self.context['response'])
             print("valInRealResp is", valInRealResp, " WHILE expectedVal is", expectedVal)
-            if "" == valInRealResp or not expectedVal == valInRealResp:
+            if "" == valInRealResp or expectedVal != valInRealResp:
                 self.context['misc']['reason'] = 'No RESP K:%s V:%s Found' % (expectedKey, expectedVal)
                 return False
         pt.print_blue(">" * 18 + "完成 RESPONSE CHECK!" + "<" * 18)

@@ -1,4 +1,5 @@
 # coding = utf-8
+import math
 
 
 def bubble(arr):
@@ -50,6 +51,30 @@ def prepare_tree():
     return node1
 
 
+fibocache = {}
+
+
+def fibo(src):
+    if src < 0:
+        return 0
+    if src in (0, 1):
+        return src
+    if src in fibocache:
+        return fibocache[src]
+    val = fibo(src - 1) + fibo(src - 2)
+    fibocache[src] = val
+    return val
+
+
+def fibo_old(src):
+    if src < 0:
+        return 0
+    if src in (0, 1):
+        return src
+    val = fibo_old(src - 1) + fibo_old(src - 2)
+    return val
+
+
 if __name__ == '__main__':
     L = [4, 9, 10, 5, 111, 3, 244]
     print(bubble(L))
@@ -57,3 +82,23 @@ if __name__ == '__main__':
     root = prepare_tree()
     print(root.shadow_string())
     print(root.height())
+    for i in range(50):
+        print(fibo(i))
+        # print("GOLDEN RATIO", fibo(i) / fibo(i + 1))
+    # print(fibo_old(45))
+    print(str(math.pi))
+    mp = {}
+    for c in str(math.pi):
+        if c in mp:
+            mp[c] = mp[c] + 1
+        else:
+            mp[c] = 1
+
+    lis = []
+    for k, v in mp.items():
+        if v == 3:
+            lis.append(k)
+    print(lis)
+
+    mx = {k: v for k, v in mp.items() if v == 3}
+    print(list(mx.keys()))

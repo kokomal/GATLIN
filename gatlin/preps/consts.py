@@ -38,10 +38,12 @@ APPL_SUMMARY_QUERY = "qihoo.sdk.appl.summary.query"
 REGISTER = "qihoo.sdk.user.register"
 # 登录
 LOGIN = "qihoo.sdk.user.mobile.login"
+# 授信
+ITEM_COMMIT = "qihoo.sdk.appl.item.commit"
 
 # 还款记录查询
 REFUND_RECORD_QUERY = "qihoo.sdk.appl.refund.record.query"
 # 查询补件信息
 SUPPLEMENT_LIST_QUERY = "qihoo.sdk.appl.supplementlist.query"
 
-methodMap = {'login': LOGIN, 'register': REGISTER, "summaryQuery": APPL_SUMMARY_QUERY}
+methodMap = {'login': LOGIN, 'register': REGISTER, "summaryQuery": APPL_SUMMARY_QUERY, "itemCommit": ITEM_COMMIT}

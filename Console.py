@@ -5,12 +5,12 @@ from openpyxl import load_workbook
 
 import gatlin.core.flowPipeline as fl
 import gatlin.infra.excel as ex
-import gatlin.infra.print as pt
 
 cache_nodes = {}
 fn = os.path.dirname(os.path.abspath(__file__)) + '/command.xlsm'
 
 
+# 初始化读取xlsm配置，保留workbook的openpyxl对象,预加载配置...
 def preload():
     wb = load_workbook(fn)
     xlsm_wrap = ex.XlsmWrapper(fn)
@@ -26,8 +26,8 @@ def fire_away(xlsm_wrap):
     running_flows_map = xlsm_wrap.find_row_and_pack_map('main-flow', 'runningFlows', 'D1')
     dev = xlsm_wrap.find_row_and_pack_map('main-flow', 'device', 'L1')
     geo = xlsm_wrap.find_row_and_pack_map('main-flow', 'geo', 'L1')
-    print('DEV', dev)
-    print('GEO', geo)
+    init_param_map['geo'] = geo
+    init_param_map['deviceInfo'] = dev
     for (flow, status) in running_flows_map.items():
         if status == 'ON':
             flow_seq_map = xlsm_wrap.find_row_and_pack_map('main-flow', flow, 'G1')
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     fire_away(xlsm_wrap)
     while 1:
         x = input("Press [q] to Quit. Press Any Other Key To RESTART...")
-        if not x == 'q':
+        if x != 'q':
             preload()
             fire_away()
         else:

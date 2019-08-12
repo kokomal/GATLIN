@@ -26,8 +26,9 @@ class LoginNodeParser(AbstractNodeParser):
         biz['loginType'] = "ORIGIN"
         biz['mobileNo'] = self.context['environ']['mobileNo']  # 手机号和password放到了environ里面
         biz['password'] = str(sec.encrypt(bytes(self.context['environ']['password'], encoding='utf8')), 'utf-8')
-        biz['geoInfo'] = str(geo.packGeo())  # 地理geo必传，否则会落库报latitude非空键异常
+        biz['geoInfo'] = str(self.context['session']['geo'])  # 地理geo必传，否则会落库报latitude非空键异常
         public_req_param["bizContent"] = str(biz)  # 业务数据
+        public_req_param["deviceInfo"] = str(self.context['session']['deviceInfo'])
         self.context['request'] = public_req_param  # 归根到底目的是为了拼装request参数
         print("LOGIN PARAM", public_req_param)
 

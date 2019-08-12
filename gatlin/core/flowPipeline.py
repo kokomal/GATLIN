@@ -9,10 +9,10 @@ import gatlin.nodes.parserSelector as ps
 
 # 读取需要进行测试的flow全集
 def launch_flows_config(location):
-    flowJsonFile = location
-    with open(flowJsonFile) as fl:
-        flowsConfig = json.loads(fl.read())
-    return flowsConfig
+    flow_json_file = location
+    with open(flow_json_file) as fl:
+        flows_config = json.loads(fl.read())
+    return flows_config
 
 
 def parse_one_flowX(flow_name, nodes, environ, init_param):

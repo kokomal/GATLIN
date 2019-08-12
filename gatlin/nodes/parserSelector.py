@@ -5,11 +5,13 @@ from gatlin.nodes.detailedParsers.demo3Parser import Demo3Parser
 from gatlin.nodes.detailedParsers.loginNodeParser import LoginNodeParser
 from gatlin.nodes.detailedParsers.queryNodeParser import SummaryQueryNodeParser
 from gatlin.nodes.detailedParsers.registerNodeParser import RegisterNodeParser
+from gatlin.nodes.detailedParsers.itemCommitNodeParser import ItemCommitNodeParser
 
 # 所有的node
 parserFactory = {'login': LoginNodeParser, 'register': RegisterNodeParser,
                  "demo1": Demo1Parser, "demo2": Demo2Parser, "demo3": Demo3Parser,
-                 "summaryQuery": SummaryQueryNodeParser}
+                 "summaryQuery": SummaryQueryNodeParser,
+                 "itemCommit": ItemCommitNodeParser}
 
 
 def fetch_parser(node):
