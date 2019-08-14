@@ -18,14 +18,15 @@ class ItemCommitNodeParser(AbstractNodeParser):
         public_req_param["bizContent"] = str(biz)  # 业务数据
         public_req_param["deviceInfo"] = str(self.context['session']['deviceInfo'])
         self.context['request'] = public_req_param  # 归根到底目的是为了拼装request参数
-        print('ItemCommitQ', public_req_param)
+        print('ItemCommitQ', json.dumps(public_req_param))
 
     # 重点在此处理session
     def fetch_resp(self):
         print('RESP OF CURRENT NODE', json.dumps(self.context['response']))
-        node_code = self.context['response']['data']['nodeCode']  # node_code
-        node_no = self.context['response']['data']['nodeNo']  # node_no
-        flow_no = self.context['response']['data']['flowNo']  # nodeName
-        self.context['session']['nodeCode'] = node_code
-        self.context['session']['nodeNo'] = node_no
-        self.context['session']['flowNo'] = flow_no
+        if 'data' in self.context['response']:
+            node_code = self.context['response']['data']['nodeCode']  # node_code
+            node_no = self.context['response']['data']['nodeNo']  # node_no
+            flow_no = self.context['response']['data']['flowNo']  # nodeName
+            self.context['session']['nodeCode'] = node_code
+            self.context['session']['nodeNo'] = node_no
+            self.context['session']['flowNo'] = flow_no

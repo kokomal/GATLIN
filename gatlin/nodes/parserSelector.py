@@ -2,10 +2,10 @@
 from gatlin.nodes.detailedParsers.demo1Parser import Demo1Parser
 from gatlin.nodes.detailedParsers.demo2Parser import Demo2Parser
 from gatlin.nodes.detailedParsers.demo3Parser import Demo3Parser
+from gatlin.nodes.detailedParsers.itemCommitNodeParser import ItemCommitNodeParser
 from gatlin.nodes.detailedParsers.loginNodeParser import LoginNodeParser
 from gatlin.nodes.detailedParsers.queryNodeParser import SummaryQueryNodeParser
 from gatlin.nodes.detailedParsers.registerNodeParser import RegisterNodeParser
-from gatlin.nodes.detailedParsers.itemCommitNodeParser import ItemCommitNodeParser
 
 # 所有的node
 parserFactory = {'login': LoginNodeParser, 'register': RegisterNodeParser,

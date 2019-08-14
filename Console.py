@@ -6,6 +6,10 @@ from openpyxl import load_workbook
 import gatlin.core.flowPipeline as fl
 import gatlin.infra.excel as ex
 
+MAIN_FLOW = 'main-flow'
+
+DEVICE_INFO = 'deviceInfo'
+
 cache_nodes = {}
 fn = os.path.dirname(os.path.abspath(__file__)) + '/command.xlsm'
 
@@ -15,22 +19,22 @@ def preload():
     wb = load_workbook(fn)
     xlsm_wrap = ex.XlsmWrapper(fn)
     for ws in wb.worksheets:
-        if ws.title not in ('main-flow', 'example'):
+        if ws.title not in (MAIN_FLOW, 'example'):
             cache_nodes[ws.title] = ex.read_sheet_and_get_json(fn, ws.title, "B3")
     return xlsm_wrap
 
 
 def fire_away(xlsm_wrap):
-    init_param_map = xlsm_wrap.find_row_and_pack_map('main-flow', 'initParam', 'A1')
-    environ_map = xlsm_wrap.find_row_and_pack_map('main-flow', 'environ', 'A1')
-    running_flows_map = xlsm_wrap.find_row_and_pack_map('main-flow', 'runningFlows', 'D1')
-    dev = xlsm_wrap.find_row_and_pack_map('main-flow', 'device', 'L1')
-    geo = xlsm_wrap.find_row_and_pack_map('main-flow', 'geo', 'L1')
+    init_param_map = xlsm_wrap.find_row_and_pack_map(MAIN_FLOW, 'initParam', 'A1')
+    environ_map = xlsm_wrap.find_row_and_pack_map(MAIN_FLOW, 'environ', 'A1')
+    running_flows_map = xlsm_wrap.find_row_and_pack_map(MAIN_FLOW, 'runningFlows', 'D1')
+    dev = xlsm_wrap.find_row_and_pack_map(MAIN_FLOW, 'device', 'L1')
+    geo = xlsm_wrap.find_row_and_pack_map(MAIN_FLOW, 'geo', 'L1')
     init_param_map['geo'] = geo
-    init_param_map['deviceInfo'] = dev
+    init_param_map[DEVICE_INFO] = dev
     for (flow, status) in running_flows_map.items():
         if status == 'ON':
-            flow_seq_map = xlsm_wrap.find_row_and_pack_map('main-flow', flow, 'G1')
+            flow_seq_map = xlsm_wrap.find_row_and_pack_map_with_switch(MAIN_FLOW, flow, 'G1')
             node_names = flow_seq_map.values()
             nodes = []
             for node in node_names:

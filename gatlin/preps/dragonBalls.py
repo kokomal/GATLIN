@@ -20,6 +20,6 @@ def can_get_7_balls(lis):
 if __name__ == '__main__':
     for i in range(100):
         balls = prepare(9)
-        # print(balls)
+        print(balls)
         if can_get_7_balls(balls):
-            print(sorted(balls))
+            print("YES! We can get 7 balls!")

@@ -35,10 +35,11 @@ class LoginNodeParser(AbstractNodeParser):
     # 重点在此处理session
     def fetch_resp(self):
         print('RESP OF CURRENT NODE', self.context['response'])
-        token = self.context['response']['data']['token']  # token
-        userNo = self.context['response']['data']['userNo']  # 获得userNo
-        mobileNo = self.context['response']['data']['mobileNo']  # 获得userNo
-        self.context['session']['token'] = token
-        self.context['session']['userNo'] = userNo
-        self.context['session']['mobileNo'] = mobileNo
-        print('SESSION IS', self.context['session'])
+        if 'data' in self.context['response']:
+            token = self.context['response']['data']['token']  # token
+            userNo = self.context['response']['data']['userNo']  # 获得userNo
+            mobileNo = self.context['response']['data']['mobileNo']  # 获得userNo
+            self.context['session']['token'] = token
+            self.context['session']['userNo'] = userNo
+            self.context['session']['mobileNo'] = mobileNo
+            print('SESSION IS', self.context['session'])
