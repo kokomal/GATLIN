@@ -25,6 +25,7 @@ def parse_one_flowX(flow_name, nodes, environ, init_param):
     context['misc'] = {'canProceed': True}
     for node in nodes:
         util.inject_all(context['environ'], node)
+        context['environ']['skip'] = False
         node_parser = ps.fetch_parser(node['nodeName'])(context)
         node_parser.lock_and_load()
         if not node_parser.can_proceed():

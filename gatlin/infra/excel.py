@@ -38,7 +38,7 @@ def read_sheet_and_get_json(fn, sheet_name, region):
         #     print("ascii of " + oneline[i] + " is: " + ascii(ord(oneline[i])))
         js_str = js_str + oneline.strip()
         row_idx = row_idx + 1
-    print(js_str)
+    # print(js_str)
     return json.loads(js_str)
 
 

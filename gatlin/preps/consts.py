@@ -43,9 +43,17 @@ LOGIN = "qihoo.sdk.user.mobile.login"
 # 授信
 ITEM_COMMIT = "qihoo.sdk.appl.item.commit"
 
+# 上传文件
+MULTI_UPLOAD = "qihoo.sdk.common.multifile.upload"
+
+# 更新交易密码
+TRADE_PWD = "qihoo.sdk.user.password.set"
+
 # 还款记录查询
 REFUND_RECORD_QUERY = "qihoo.sdk.appl.refund.record.query"
 # 查询补件信息
 SUPPLEMENT_LIST_QUERY = "qihoo.sdk.appl.supplementlist.query"
 
-methodMap = {'login': LOGIN, 'register': REGISTER, "summaryQuery": APPL_SUMMARY_QUERY, "itemCommit": ITEM_COMMIT}
+methodMap = {'login': LOGIN, 'register': REGISTER, "summaryQuery": APPL_SUMMARY_QUERY, "itemCommit": ITEM_COMMIT,
+             "itemCommitFace": ITEM_COMMIT, "idcardUpload": MULTI_UPLOAD, "tradePwd": TRADE_PWD,
+             "itemCommitId": ITEM_COMMIT}
