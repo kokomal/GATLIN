@@ -67,6 +67,10 @@ class AbstractNodeParser(metaclass=ABCMeta):
     # 核心流程
     def lock_and_load(self):
         self.prepare()
+        if self.context['environ']['skip'] == True:  # 跳过
+            print("SKIP...")
+            self.context['misc']['canProceed'] = True
+            return
         self.call_out()
         self.fetch_resp()
         should_verify = self.context['environ']['shouldVerify']  # 是否校验

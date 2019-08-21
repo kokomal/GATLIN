@@ -2,8 +2,6 @@
 
 import gatlin.infra.commonUtils as util
 import gatlin.infra.security as sec
-import gatlin.preps.geo as geo
-import gatlin.preps.device as dv
 from gatlin.nodes.base import AbstractNodeParser
 from gatlin.preps import params
 

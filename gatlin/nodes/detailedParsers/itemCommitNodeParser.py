@@ -75,7 +75,9 @@ class ItemCommitNodeFaceParser(AbstractNodeParser):
 
     # 重点在此处理session
     def fetch_resp(self):
-        # {"flag": "S", "code": null, "msg": null, "data": {"flowNo": "c49a01bbf7d94d19810168d110f56249", "nodeNo": "200002", "nodeCode": "IDENTITY", "custNo": null, "applNo": null, "lastNode": "N", "applProgress": "12%", "segmentInfoList": [{"custName": "RACHELLE NAVARRO SUGUE", "idNo": "006304154765"}]}}
+        # {"flag": "S", "code": null, "msg": null, "data": {"flowNo": "c49a01bbf7d94d19810168d110f56249", "nodeNo":
+        # "200002", "nodeCode": "IDENTITY", "custNo": null, "applNo": null, "lastNode": "N", "applProgress": "12%",
+        # "segmentInfoList": [{"custName": "RACHELLE NAVARRO SUGUE", "idNo": "006304154765"}]}}
         print('RESP OF CURRENT NODE', json.dumps(self.context['response']))
         if 'data' in self.context['response']:
             node_code = self.context['response']['data']['nodeCode']  # node_code
@@ -92,8 +94,8 @@ class IdcardUploadNodeParser(AbstractNodeParser):
         util.inject_all_soft(public_req_param, self.context['session'])  # 取初始化参数
         self.pack_method(public_req_param)
         session_code_code = self.context['session']['nodeCode']
-        if "IDCARD" != session_code_code:  # 不是FACE
-            print("NOT IDCARD NODE, SKIP!")
+        if "IDENTITY" != session_code_code:  # 不是IDENTITY
+            print("NOT IDENTITY NODE, SKIP!")
             self.context['environ']['skip'] = True  # 跳过
             return
         biz = {
@@ -119,12 +121,6 @@ class IdcardUploadNodeParser(AbstractNodeParser):
         print('RESP OF CURRENT NODE', json.dumps(self.context['response']))
         if 'data' in self.context['response']:
             pass
-            # node_code = self.context['response']['data']['nodeCode']  # node_code
-            # node_no = self.context['response']['data']['nodeNo']  # node_no
-            # flow_no = self.context['response']['data']['flowNo']  # nodeName
-            # self.context['session']['nodeCode'] = node_code
-            # self.context['session']['nodeNo'] = node_no
-            # self.context['session']['flowNo'] = flow_no
 
 
 # 修改密码（交易）
@@ -150,12 +146,17 @@ class TradePwdNodeParser(AbstractNodeParser):
             pass
 
 
-# 银行卡提交
+#  身份证提交
 class ItemCommitIdNodeParser(AbstractNodeParser):
     def prepare(self):
         public_req_param = params.genericPackParam()
         util.inject_all_soft(public_req_param, self.context['session'])  # 取初始化参数
         self.pack_method(public_req_param)
+        session_code_code = self.context['session']['nodeCode']
+        if "IDENTITY" != session_code_code:  # 不是IDENTITY
+            print("NOT IDENTITY NODE, SKIP!")
+            self.context['environ']['skip'] = True  # 跳过
+            return
         biz = {"applNo": "", 'flowNo': self.context['session']['flowNo'],
                "nodeCode": self.context['session']['nodeCode'], "nodeNo": self.context['session']['nodeNo'],
                "segmentInfoList": [
@@ -163,18 +164,7 @@ class ItemCommitIdNodeParser(AbstractNodeParser):
                        "segmentCode": "IDENTITY",
                        "segmentName": "身份信息",
                        "segmentValue": [
-                           {
-                               "birthdayStr": "1998-01-01",
-                               "called": "Female",
-                               "firstName": "YSYTHES",
-                               "frontMid": "FN026a76f31ca6485fa895d98597f343dc",
-                               "fullName": "PHRA IFBZB YSYTHES",
-                               "idNo": self.context['environ']['id'],
-                               "idType": "SSS",
-                               "lastName": "PHRA",
-                               "middleName": "IFBZB",
-                               "rearMid": ""
-                           }
+                           self.context['session']['idcard']
                        ]
                    }
                ]}
@@ -184,6 +174,50 @@ class ItemCommitIdNodeParser(AbstractNodeParser):
         public_req_param["deviceInfo"] = str(self.context['session']['deviceInfo'])
         self.context['request'] = public_req_param  # 归根到底目的是为了拼装request参数
         print('ItemCommitIdUpload', json.dumps(public_req_param))
+
+    def fetch_resp(self):
+        # {"flag": "S", "code": null, "msg": null, "data": {"flowNo": "a456abb1c4cb4b849faeb16b9834a2da", "nodeNo":
+        # "200003", "nodeCode": "PERSONINFO", "custNo": null, "applNo": null, "lastNode": "N", "applProgress": "25",
+        # "segmentInfoList": []}}
+        print('RESP OF CURRENT NODE', json.dumps(self.context['response']))
+        if 'data' in self.context['response']:
+            node_code = self.context['response']['data']['nodeCode']  # node_code
+            node_no = self.context['response']['data']['nodeNo']  # node_no
+            flow_no = self.context['response']['data']['flowNo']  # nodeName
+            self.context['session']['nodeCode'] = node_code
+            self.context['session']['nodeNo'] = node_no
+            self.context['session']['flowNo'] = flow_no
+
+
+class PersonInfoNodeParser(AbstractNodeParser):
+    def prepare(self):
+        public_req_param = params.genericPackParam()
+        util.inject_all_soft(public_req_param, self.context['session'])  # 取初始化参数
+        self.pack_method(public_req_param)
+        person = self.context['session']['personal_info']
+        session_code_code = self.context['session']['nodeCode']
+        if "PERSONINFO" != session_code_code:  # 不是PERSONINFO
+            print("NOT PERSONINFO NODE, SKIP!")
+            self.context['environ']['skip'] = True  # 跳过
+            return
+        biz = {"applNo": "", 'flowNo': self.context['session']['flowNo'],
+               "nodeCode": session_code_code, "nodeNo": self.context['session']['nodeNo'],
+               "segmentInfoList": [
+                   {
+                       "segmentCode": "PERSONINFO",
+                       "segmentName": "个人信息",
+                       "segmentValue": [
+                           person
+                       ]
+                   }
+               ]}
+        public_req_param['userNo'] = self.context['session']['userNo']
+        public_req_param['token'] = self.context['session']['token']
+        public_req_param["bizContent"] = str(biz)  # 业务数据
+        public_req_param["deviceInfo"] = str(self.context['session']['deviceInfo'])
+        self.context['request'] = public_req_param  # 归根到底目的是为了拼装request参数
+        print("PERSONAL-INFO PARAM", json.dumps(public_req_param))
+        return
 
     def fetch_resp(self):
         # {"flag": "S", "code": null, "msg": null, "data": {"flowNo": "a456abb1c4cb4b849faeb16b9834a2da", "nodeNo":

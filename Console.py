@@ -8,8 +8,6 @@ import gatlin.infra.excel as ex
 
 MAIN_FLOW = 'main-flow'
 
-DEVICE_INFO = 'deviceInfo'
-
 cache_nodes = {}
 fn = os.path.dirname(os.path.abspath(__file__)) + '/command.xlsm'
 
@@ -30,8 +28,12 @@ def fire_away(xlsm_wrap):
     running_flows_map = xlsm_wrap.find_row_and_pack_map(MAIN_FLOW, 'runningFlows', 'D1')
     dev = xlsm_wrap.find_row_and_pack_map(MAIN_FLOW, 'device', 'L1')
     geo = xlsm_wrap.find_row_and_pack_map(MAIN_FLOW, 'geo', 'L1')
+    person = xlsm_wrap.find_row_and_pack_map(MAIN_FLOW, 'personal_info', 'L1')
+    idcard = xlsm_wrap.find_row_and_pack_map(MAIN_FLOW, 'idcard', 'P1')
     init_param_map['geo'] = geo
-    init_param_map[DEVICE_INFO] = dev
+    init_param_map['deviceInfo'] = dev
+    init_param_map['personal_info'] = person
+    init_param_map['idcard'] = idcard
     for (flow, status) in running_flows_map.items():
         if status == 'ON':
             flow_seq_map = xlsm_wrap.find_row_and_pack_map_with_switch(MAIN_FLOW, flow, 'G1')
